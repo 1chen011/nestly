@@ -1,61 +1,62 @@
 export default function ListingCard({ item }: any) {
   return (
-    <div className="border rounded-2xl p-5 shadow-sm hover:shadow-md transition space-y-3 bg-white">
+    <div className="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition transform hover:-translate-y-1">
 
-      {/* TITLE + PRICE */}
-      <div className="flex justify-between items-start">
-        <h2 className="font-semibold text-lg leading-tight">
-          {item.title}
-        </h2>
+      {/* TOP BLOCK (image placeholder style) */}
+      <div className="h-40 bg-gradient-to-br from-gray-200 to-gray-300" />
 
-        <div className="text-right">
-          <p className="font-bold text-green-600">
-            ${item.price}
-          </p>
-          <p className="text-xs text-gray-500">/month</p>
+      {/* CONTENT */}
+      <div className="p-4 space-y-3">
+
+        {/* TITLE + PRICE */}
+        <div className="flex justify-between items-start">
+          <h2 className="font-semibold text-base leading-snug">
+            {item.title}
+          </h2>
+
+          <div className="text-right">
+            <p className="font-bold text-black">
+              ${item.price}
+            </p>
+            <p className="text-xs text-gray-500">/month</p>
+          </div>
         </div>
-      </div>
 
-      {/* ADDRESS */}
-      <p className="text-gray-500 text-sm">
-        📍 {item.address}
-      </p>
+        {/* ADDRESS */}
+        <p className="text-sm text-gray-500">
+          📍 {item.address}
+        </p>
 
-      {/* TAGS ROW */}
-      <div className="flex gap-2 flex-wrap text-xs">
-        <span className="bg-gray-100 px-2 py-1 rounded-full">
-          🛏 {item.bedrooms} bed
-        </span>
-        <span className="bg-gray-100 px-2 py-1 rounded-full">
-          🛁 {item.bathrooms} bath
-        </span>
-        <span className="bg-gray-100 px-2 py-1 rounded-full">
-          🚗 {item.parking ? "Parking" : "No Parking"}
-        </span>
-      </div>
-
-      {/* LOCATION INFO */}
-      <div className="text-sm text-gray-600 space-y-1 pt-1">
-        <p>🚇 Subway: {item.distanceToSubway} min</p>
-        <p>🛒 Grocery: {item.distanceToGrocery} min</p>
-      </div>
-
-      {/* SCORE BADGE */}
-      {item.score !== undefined && (
-        <div className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-          🏆 Score: {item.score}/100
+        {/* TAGS */}
+        <div className="flex flex-wrap gap-2 text-xs">
+          <span className="bg-gray-100 px-2 py-1 rounded-full">
+            🛏 {item.bedrooms}
+          </span>
+          <span className="bg-gray-100 px-2 py-1 rounded-full">
+            🛁 {item.bathrooms}
+          </span>
+          <span className="bg-gray-100 px-2 py-1 rounded-full">
+            {item.parking ? "🚗 Parking" : "🚫 No Parking"}
+          </span>
         </div>
-      )}
 
-      {/* LINK */}
-      <a
-        href={item.url}
-        target="_blank"
-        className="block text-center mt-2 bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition"
-      >
-        View Listing →
-      </a>
+        {/* SCORE */}
+        {item.score !== undefined && (
+          <div className="inline-flex bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+            ⭐ Score {item.score}/100
+          </div>
+        )}
 
+        {/* BUTTON */}
+        <a
+          href={item.url}
+          target="_blank"
+          className="block text-center bg-black text-white py-2 rounded-xl text-sm hover:bg-gray-800 transition"
+        >
+          View Listing
+        </a>
+
+      </div>
     </div>
   );
 }

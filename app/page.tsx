@@ -5,21 +5,14 @@ import { useState } from "react";
 import ListingCard from "@/components/ListingCard";
 import { listings } from "@/data/listing";
 
-// 🚨 关键：Leaflet 必须 SSR 关闭
 const MapView = dynamic(() => import("@/components/MapView"), {
   ssr: false,
 });
 
 export default function Home() {
-  // ======================
-  // STATE
-  // ======================
   const [maxPrice, setMaxPrice] = useState(2500);
   const [bedrooms, setBedrooms] = useState(0);
 
-  // ======================
-  // SCORE FUNCTION
-  // ======================
   function getScore(item: any) {
     let score = 0;
 
@@ -44,9 +37,6 @@ export default function Home() {
     return score;
   }
 
-  // ======================
-  // FILTER + SCORE + SORT
-  // ======================
   const scoredListings = listings
     .filter((item) => {
       return (
@@ -61,71 +51,75 @@ export default function Home() {
     .sort((a, b) => b.score - a.score);
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
+    <main className="min-h-screen bg-gray-50">
+      
+      {/* HEADER */}
+      <div className="sticky top-0 bg-white z-10 border-b">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">🏠 Nestly</h1>
 
-      {/* TITLE */}
-      <h1 className="text-3xl font-bold mb-6">
-        🏠 Nestly
-      </h1>
-
-      {/* 🗺 MAP */}
-      <MapView listings={scoredListings} />
-
-      {/* FILTER PANEL */}
-      <div className="mb-6 p-4 border rounded-xl space-y-4 mt-4">
-
-        {/* PRICE */}
-        <div>
-          <label className="block mb-1">
-            Max Price: ${maxPrice}
-          </label>
-
-          <input
-            type="range"
-            min="1000"
-            max="4000"
-            value={maxPrice}
-            onChange={(e) =>
-              setMaxPrice(Number(e.target.value))
-            }
-          />
+          <div className="flex gap-4 text-sm">
+            <span className="text-gray-500">Find homes in Toronto</span>
+          </div>
         </div>
-
-        {/* BEDROOMS */}
-        <div>
-          <label className="block mb-1">
-            Bedrooms: {bedrooms === 0 ? "Any" : bedrooms + "+"}
-          </label>
-
-          <select
-            value={bedrooms}
-            onChange={(e) =>
-              setBedrooms(Number(e.target.value))
-            }
-            className="border p-1 rounded"
-          >
-            <option value={0}>Any</option>
-            <option value={1}>1+</option>
-            <option value={2}>2+</option>
-            <option value={3}>3+</option>
-          </select>
-        </div>
-
       </div>
 
-      {/* LISTINGS */}
-      <div className="space-y-4">
-        {scoredListings.length === 0 ? (
-          <p className="text-gray-500">
-            No listings found 😢
-          </p>
-        ) : (
-          scoredListings.map((item) => (
-            <ListingCard key={item.id} item={item} />
-          ))
-        )}
+      {/* MAP SECTION */}
+      <div className="max-w-6xl mx-auto px-6 pt-4">
+        <div className="rounded-2xl overflow-hidden shadow-sm border">
+          <MapView listings={scoredListings} />
+        </div>
       </div>
 
+      {/* FILTERS */}
+      <div className="max-w-6xl mx-auto px-6 mt-6">
+        <div className="bg-white border rounded-2xl p-4 flex flex-col md:flex-row gap-6">
+
+          {/* PRICE */}
+          <div className="flex-1">
+            <p className="text-sm text-gray-500 mb-1">Max Price</p>
+            <p className="font-medium mb-2">${maxPrice}</p>
+
+            <input
+              className="w-full"
+              type="range"
+              min="1000"
+              max="4000"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+            />
+          </div>
+
+          {/* BEDROOMS */}
+          <div className="flex-1">
+            <p className="text-sm text-gray-500 mb-1">Bedrooms</p>
+
+            <select
+              value={bedrooms}
+              onChange={(e) => setBedrooms(Number(e.target.value))}
+              className="border rounded-lg px-3 py-2 w-full"
+            >
+              <option value={0}>Any</option>
+              <option value={1}>1+</option>
+              <option value={2}>2+</option>
+              <option value={3}>3+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* LISTINGS GRID */}
+      <div className="max-w-6xl mx-auto px-6 mt-6 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {scoredListings.length === 0 ? (
+            <p className="text-gray-500">No listings found 😢</p>
+          ) : (
+            scoredListings.map((item) => (
+              <ListingCard key={item.id} item={item} />
+            ))
+          )}
+        </div>
+      </div>
     </main>
   );
 }

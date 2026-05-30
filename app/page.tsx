@@ -1,65 +1,131 @@
-import Image from "next/image";
+"use client";
+
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import ListingCard from "@/components/ListingCard";
+import { listings } from "@/data/listing";
+
+// 🚨 关键：Leaflet 必须 SSR 关闭
+const MapView = dynamic(() => import("@/components/MapView"), {
+  ssr: false,
+});
 
 export default function Home() {
+  // ======================
+  // STATE
+  // ======================
+  const [maxPrice, setMaxPrice] = useState(2500);
+  const [bedrooms, setBedrooms] = useState(0);
+
+  // ======================
+  // SCORE FUNCTION
+  // ======================
+  function getScore(item: any) {
+    let score = 0;
+
+    if (item.price <= 2000) score += 25;
+    else if (item.price <= 2500) score += 15;
+    else score += 5;
+
+    if (item.bedrooms >= bedrooms) score += 20;
+
+    if (item.type === "condo") score += 10;
+
+    if (item.distanceToSubway <= 5) score += 25;
+    else if (item.distanceToSubway <= 10) score += 15;
+    else score += 5;
+
+    if (item.distanceToGrocery <= 5) score += 15;
+    else if (item.distanceToGrocery <= 10) score += 10;
+    else score += 5;
+
+    if (item.parking) score += 10;
+
+    return score;
+  }
+
+  // ======================
+  // FILTER + SCORE + SORT
+  // ======================
+  const scoredListings = listings
+    .filter((item) => {
+      return (
+        item.price <= maxPrice &&
+        (bedrooms === 0 || item.bedrooms >= bedrooms)
+      );
+    })
+    .map((item) => ({
+      ...item,
+      score: getScore(item),
+    }))
+    .sort((a, b) => b.score - a.score);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="max-w-2xl mx-auto p-6">
+
+      {/* TITLE */}
+      <h1 className="text-3xl font-bold mb-6">
+        🏠 Nestly
+      </h1>
+
+      {/* 🗺 MAP */}
+      <MapView listings={scoredListings} />
+
+      {/* FILTER PANEL */}
+      <div className="mb-6 p-4 border rounded-xl space-y-4 mt-4">
+
+        {/* PRICE */}
+        <div>
+          <label className="block mb-1">
+            Max Price: ${maxPrice}
+          </label>
+
+          <input
+            type="range"
+            min="1000"
+            max="4000"
+            value={maxPrice}
+            onChange={(e) =>
+              setMaxPrice(Number(e.target.value))
+            }
+          />
+        </div>
+
+        {/* BEDROOMS */}
+        <div>
+          <label className="block mb-1">
+            Bedrooms: {bedrooms === 0 ? "Any" : bedrooms + "+"}
+          </label>
+
+          <select
+            value={bedrooms}
+            onChange={(e) =>
+              setBedrooms(Number(e.target.value))
+            }
+            className="border p-1 rounded"
+          >
+            <option value={0}>Any</option>
+            <option value={1}>1+</option>
+            <option value={2}>2+</option>
+            <option value={3}>3+</option>
+          </select>
+        </div>
+
+      </div>
+
+      {/* LISTINGS */}
+      <div className="space-y-4">
+        {scoredListings.length === 0 ? (
+          <p className="text-gray-500">
+            No listings found 😢
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        ) : (
+          scoredListings.map((item) => (
+            <ListingCard key={item.id} item={item} />
+          ))
+        )}
+      </div>
+
+    </main>
   );
 }

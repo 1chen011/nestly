@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Nestly
 
-## Getting Started
+Nestly is a smart rental intelligence platform designed to help users find and evaluate housing in Toronto. Instead of manually browsing multiple listing sites, Nestly aggregates rental information and helps users make faster and better decisions based on their lifestyle, transportation needs, and living preferences.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Problem
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Finding a place to rent in Toronto is difficult because users need to manually compare:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Rent prices across multiple platforms
+- Distance to transit (TTC / subway / bus)
+- Proximity to grocery stores and daily necessities
+- Housing types (house / condo / apartment)
+- Lease terms and availability
+- Room and bathroom configurations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This process is time-consuming and fragmented.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 💡 Solution
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Nestly simplifies the rental decision process by:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Structuring rental listings into a unified format
+- Allowing users to filter based on personal needs
+- Evaluating listings based on livability factors
+- Helping users compare options more efficiently
 
-## Deploy on Vercel
+Instead of just showing listings, Nestly helps users **decide**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚙️ Features (MVP)
+
+- 📋 Structured rental listing display
+- 🔎 Filtering by price range
+- 🏠 Support for housing types (house / condo / apartment)
+- 🛏 Bedroom & bathroom information
+- 📍 Location-based data support
+- 🗺 Interactive map visualization (planned / in progress)
+- 🔗 Direct links to original listings
+
+---
+
+## 🧠 Core Concept
+
+Nestly is built around a simple idea:
+
+> A rental listing is not just data — it is a decision problem.
+
+Each listing can be evaluated based on:
+
+- Transit accessibility 🚇
+- Grocery proximity 🛒
+- Parking availability 🚗
+- Price vs value 💰
+- Room suitability 🛏
+
+Future versions will include a **scoring system** to rank listings automatically.
+
+---
+
+## 🧱 Tech Stack
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- React
+- Leaflet (map visualization)
+- OpenStreetMap
+
+---
+
+## 📊 Future Improvements
+
+- 🧠 AI-based rental scoring system
+- 🚇 Transit time estimation (TTC integration)
+- 🛒 Grocery / amenity distance calculation
+- 🔍 Search and recommendation system
+- 📍 Heatmap of rental affordability in Toronto
+- 👤 User preference profiles (like job matching systems)
+
+---
+
+## 🚀 Vision
+
+Nestly aims to evolve into a **decision engine for housing**, similar to how job platforms help users find employment.
+
+Instead of browsing listings, users will:
+
+> Input preferences → Get ranked recommendations
+
+---
+
+## 🧪 Status
+
+This project is currently in MVP development stage.
+
+Core focus:
+- Data structuring
+- Filtering system
+- Map visualization
+- Scoring system design (next phase)
+
+---
+
+## 📌 Author
+
+Built by a developer exploring real-world problem solving in housing and decision systems.
+
+---
+
+## 📈 Why this matters
+
+Rental search is not a browsing problem — it's a **decision optimization problem**.
+
+Nestly is built to solve that.
